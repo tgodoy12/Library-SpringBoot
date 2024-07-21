@@ -9,7 +9,7 @@ import org.hibernate.annotations.UuidGenerator;
 @Data
 @Entity
 @Table(name = "autor")
-public class Autor {
+public class Author {
 
     @Id
     @UuidGenerator

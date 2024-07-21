@@ -1,10 +1,10 @@
 package com.etter.library.services;
 
 import com.etter.library.exceptions.LibraryExceptions;
-import com.etter.library.persistence.entities.Autor;
+import com.etter.library.persistence.entities.Author;
 import com.etter.library.persistence.entities.Book;
 import com.etter.library.persistence.entities.Publisher;
-import com.etter.library.persistence.repository.AutorRepository;
+import com.etter.library.persistence.repository.AuthorRepository;
 import com.etter.library.persistence.repository.BookRepository;
 import com.etter.library.persistence.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,15 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private AutorRepository autorRepository;
+    private AuthorRepository authorRepository;
     @Autowired
     private PublisherRepository publisherRepository;
 
-    public void createBook(Long isbn, String title, Integer copies, String autorId, String publisherId)
+    public void createBook(Long isbn, String title, Integer copies, String authorId, String publisherId)
             throws LibraryExceptions {
+
+        //validar valores pasados por parámentros
+        validate(isbn, title, copies, authorId, publisherId);
 
         //llamar al método findById para verificar si ya existe
         Optional<Book> result = bookRepository.findById(isbn);
@@ -34,14 +37,14 @@ public class BookService {
         }
 
         //verificar si autor y publisher ya existen, de lo contrario, se crea uno nuevo.
-        Optional<Autor> autorResult = autorRepository.findById(autorId);
+        Optional<Author> authorResult = authorRepository.findById(authorId);
         Optional<Publisher> publisherResult = publisherRepository.findById(publisherId);
 
-        Autor newAutor = new Autor();
+        Author newAuthor = new Author();
         Publisher newPublisher = new Publisher();
 
-        if (autorResult.isPresent()) {
-            newAutor = autorResult.get();
+        if (authorResult.isPresent()) {
+            newAuthor = authorResult.get();
         }
 
         if (publisherResult.isPresent()) {
@@ -56,17 +59,37 @@ public class BookService {
         newBook.setCopies(copies);
         newBook.setRegistered(new Date());
         newBook.setPublisher(newPublisher);
-        newBook.setAutor(newAutor);
+        newBook.setAuthor(newAuthor);
 
         //persistir a la bd con el metodo save de bookRepository
         bookRepository.save(newBook);
     }
-    /**
-     * Tareas:
-     * 1-Buscar reducir la cantidad de lineas de codigo. Puede ser con un constructor con parametros
-     * para la entidad book. Probar de las dos maneras
-     *
-     * 2-Crear el metodo validate() que valida que los argumentos que se mandan no sean nullos.
-     * 3-Continuar con el resto de los métodos
+
+    public void validate(Long isbn, String title, Integer copies, String authorId, String publisherId) throws
+            LibraryExceptions {
+
+        if(isbn == null) {
+            throw new LibraryExceptions("ISBN can't be null");
+        }
+        if(title.isEmpty()) {
+            throw new LibraryExceptions("Title can't be empty");
+        }
+        if(copies == null) {
+            throw new LibraryExceptions("Copies can't be null");
+        }
+        if(authorId.isEmpty()) {
+            throw new LibraryExceptions("Author can't be empty");
+        }
+        if(publisherId.isEmpty()) {
+            throw new LibraryExceptions("Publisher can't be empty");
+        }
+    }
+    /*
+      Tareas:
+      1-Buscar reducir la cantidad de lineas de codigo. Puede ser con un constructor con parametros
+      para la entidad book. Probar de las dos maneras
+
+      2-Crear el metodo validate() que valida que los argumentos que se mandan no sean nullos.
+      3-Continuar con el resto de los métodos
      */
 }

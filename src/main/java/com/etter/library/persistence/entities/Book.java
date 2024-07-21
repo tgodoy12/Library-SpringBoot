@@ -19,7 +19,7 @@ public class Book {
     private Date registered;
 
     @ManyToOne
-    private Autor autor;
+    private Author author;
 
     @ManyToOne
     private Publisher publisher;
