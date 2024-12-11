@@ -7,10 +7,13 @@ import com.etter.library.persistence.entities.Publisher;
 import com.etter.library.persistence.repository.AuthorRepository;
 import com.etter.library.persistence.repository.BookRepository;
 import com.etter.library.persistence.repository.PublisherRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,7 @@ public class BookService {
     @Autowired
     private PublisherRepository publisherRepository;
 
+    @Transactional
     public void createBook(Long isbn, String title, Integer copies, String authorId, String publisherId)
             throws LibraryExceptions {
 
@@ -65,6 +69,7 @@ public class BookService {
         bookRepository.save(newBook);
     }
 
+    @Transactional
     public void modifyBook(Long isbn, String title, Integer copies, String authorId, String publisherId) throws
             LibraryExceptions {
 
@@ -85,8 +90,25 @@ public class BookService {
             publisher = publisherResult.get();
         }
 
+        if (bookResult.isPresent()) {
+            Book book = bookResult.get();
 
+            book.setTitle(title);
+            book.setCopies(copies);
+            book.setAuthor(author);
+            book.setPublisher(publisher);
 
+            bookRepository.save(book);
+        }
+
+    }
+
+     /**
+     * verificar que funcione, sino pruebo de la forma
+     * larga definiendo una List<Book>
+     */
+    public List<Book> listAllBooks() {
+        return bookRepository.findAll();
     }
 
     public void validate(Long isbn, String title, Integer copies, String authorId, String publisherId) throws
@@ -113,7 +135,6 @@ public class BookService {
       1-Buscar reducir la cantidad de lineas de codigo. Puede ser con un constructor con parametros
       para la entidad book. Probar de las dos maneras
 
-      2-Crear el metodo validate() que valida que los argumentos que se mandan no sean nullos.
       3-Continuar con el resto de los métodos
      */
 }
