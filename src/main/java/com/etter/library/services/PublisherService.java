@@ -26,6 +26,8 @@ public class PublisherService {
 
         Publisher newPublisher = new Publisher();
 
+        //Pienso que debería buscar si el autor ya existe en la BBDD
+
         newPublisher.setName(name);
 
         publisherRepository.save(newPublisher);

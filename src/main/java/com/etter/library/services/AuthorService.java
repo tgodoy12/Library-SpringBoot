@@ -39,7 +39,7 @@ public class AuthorService {
         return authorList;
     }
 
-    @Transactional
+    @Transactional 
     public void modifyAuthor(String id, String name) throws LibraryExceptions {
 
         validate(name);

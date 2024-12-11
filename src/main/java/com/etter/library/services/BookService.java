@@ -65,6 +65,30 @@ public class BookService {
         bookRepository.save(newBook);
     }
 
+    public void modifyBook(Long isbn, String title, Integer copies, String authorId, String publisherId) throws
+            LibraryExceptions {
+
+        validate(isbn, title, copies, authorId, publisherId);
+
+        Optional<Book> bookResult = bookRepository.findById(isbn);
+        Optional<Author> authorResult = authorRepository.findById(authorId);
+        Optional<Publisher> publisherResult = publisherRepository.findById(publisherId);
+
+        Author author = new Author();
+        Publisher publisher = new Publisher();
+
+        if (authorResult.isPresent()) {
+            author = authorResult.get();
+        }
+
+        if (publisherResult.isPresent()) {
+            publisher = publisherResult.get();
+        }
+
+
+
+    }
+
     public void validate(Long isbn, String title, Integer copies, String authorId, String publisherId) throws
             LibraryExceptions {
 
