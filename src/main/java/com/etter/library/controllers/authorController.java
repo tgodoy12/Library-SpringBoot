@@ -16,7 +16,7 @@ public class authorController {
     @Autowired
     private AuthorService authorService;
 
-    @PostMapping("/register")
+    @PostMapping("/new")
     public void registerAuthor(@RequestBody AuthorDTO authorDTO) {
         try {
             authorService.createAuthor(authorDTO.getName());

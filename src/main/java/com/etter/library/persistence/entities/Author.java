@@ -8,7 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @Entity
-@Table(name = "autor")
+@Table(name = "author")
 public class Author {
 
     @Id
