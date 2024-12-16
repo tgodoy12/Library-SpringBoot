@@ -34,7 +34,7 @@ public class PublisherService {
 
     }
 
-    public List<Publisher> listAllPublishers() {
+    public List<Publisher> getAllPublishers() {
 
         List<Publisher> publisherList = new ArrayList<>();
         publisherList = publisherRepository.findAll();
@@ -43,7 +43,7 @@ public class PublisherService {
     }
 
     @Transactional
-    public void modifyPublisher(String id, String name) throws LibraryExceptions {
+    public void editPublisher(String id, String name) throws LibraryExceptions {
 
         //validar parametros enviados
         validate(name);

@@ -17,6 +17,20 @@ public class AuthorService {
     @Autowired
     AuthorRepository authorRepository;
 
+
+    public Optional<Author> getAuthor(String id) {
+        return authorRepository.findById(id);
+    }
+
+    public List<Author> getAllAuthors() {
+
+        List<Author> authorList = new ArrayList<>();
+
+        authorList = authorRepository.findAll();
+
+        return authorList;
+    }
+
     @Transactional
     public void createAuthor(String name) throws LibraryExceptions {
 
@@ -30,17 +44,9 @@ public class AuthorService {
 
     }
 
-    public List<Author> getAllAuthors() {
-
-        List<Author> authorList = new ArrayList<>();
-
-        authorList = authorRepository.findAll();
-
-        return authorList;
-    }
 
     @Transactional 
-    public void modifyAuthor(String id, String name) throws LibraryExceptions {
+    public void editAuthor(String id, String name) throws LibraryExceptions {
 
         validate(name);
 
