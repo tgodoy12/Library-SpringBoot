@@ -46,7 +46,7 @@ public class AuthorService {
 
 
     @Transactional 
-    public void editAuthor(String id, String name) throws LibraryExceptions {
+    public void updateAuthor(String id, String name) throws LibraryExceptions {
 
         validate(name);
 
@@ -59,6 +59,7 @@ public class AuthorService {
         }
 
     }
+
 
     public void validate(String name) throws LibraryExceptions {
         if (name.isEmpty()) {

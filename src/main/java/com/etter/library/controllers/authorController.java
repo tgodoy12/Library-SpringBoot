@@ -5,6 +5,8 @@ import com.etter.library.exceptions.LibraryExceptions;
 import com.etter.library.persistence.entities.Author;
 import com.etter.library.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,4 +43,18 @@ public class authorController {
         }
 
     }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<String> updateAuthor(@PathVariable String id, @RequestBody AuthorDTO authorDTO) {
+        try {
+            authorService.updateAuthor(id, authorDTO.getName());
+            return ResponseEntity.ok("Author updated successfully");
+        } catch (LibraryExceptions e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred");
+        }
+    }
+
+
 }
